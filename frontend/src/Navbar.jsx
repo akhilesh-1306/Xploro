@@ -5,7 +5,8 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-function NavScroll() {
+function NavScroll() { 
+
   return (
     <Navbar expand="lg" className="bg-black text-white">
       <Container fluid>
@@ -29,7 +30,7 @@ function NavScroll() {
               />
               <Button variant="outline-light">Search</Button>
             </Form>
-          <Nav.Link href="#action2" className='text-white'>Akhilesh Nekar</Nav.Link>
+          <Nav.Link href="#action2" className='text-white'>{localStorage.getItem("loggedInUser")}</Nav.Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>

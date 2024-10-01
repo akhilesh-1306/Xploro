@@ -1,6 +1,62 @@
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import {Link, Navigate, useNavigate} from "react-router-dom"
+import {ToastContainer} from "react-toastify"
+import { handleError,handleSuccess } from '../utils';
 
 export default function Signup() {
+
+    const [signupInfo,setSignupInfo] = useState({
+        name : "",
+        email : "",
+        password : "",
+        location : "",
+      });
+    
+      const navigate = useNavigate();
+    
+      const handleChange = (e)=>{
+        const {name,value} = e.target;
+        const copySignupInfo = {...signupInfo};
+        copySignupInfo[name] = value;
+        setSignupInfo(copySignupInfo);
+      }
+    
+      const handleSignup = async (e)=>{
+        e.preventDefault();
+        const {name,email,password} = signupInfo;
+        if(!name || !email || !password || !location){
+          return handleError("All fields are required")
+        }
+        try{
+          const url = "http://localhost:8080/auth/signup";
+          const response = await fetch(url,{
+            method:"POST",
+            headers : {
+              "Content-type" : "application/json"
+            },
+            body : JSON.stringify(signupInfo),
+          });
+          const result = await response.json();
+          const {success,message,error} = result;
+          if(success){
+            handleSuccess(message);
+            setTimeout(()=>{
+              navigate("/login")
+            },1000)
+          }
+          else if(error){
+            const details = error?.details[0].message;
+            handleError(details);
+          }
+          else if(!success){
+            handleError(message);
+          }
+        }
+        catch(err){
+          handleError(err);
+        }
+      }
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
             <div
@@ -15,7 +71,7 @@ export default function Signup() {
                         Welcome
                     </h2>
                     <p className="mt-4 text-center text-gray-400">Sign up to continue</p>
-                    <form method="POST" action="#" className="mt-8 space-y-6">
+                    <form onSubmit={handleSignup} className="mt-8 space-y-6">
                         <div className="rounded-md shadow-sm">
                             <div>
                                 <label className="sr-only" htmlFor="name">
@@ -29,6 +85,8 @@ export default function Signup() {
                                     type="name"
                                     name="name"
                                     id="name"
+                                    onChange={handleChange}
+                                    value={signupInfo.name}
                                 />
                             </div>
 
@@ -44,6 +102,8 @@ export default function Signup() {
                                     type="email"
                                     name="email"
                                     id="email"
+                                    onChange={handleChange}
+                                    value={signupInfo.email}
                                 />
                             </div>
                             <div className="mt-4">
@@ -58,6 +118,24 @@ export default function Signup() {
                                     type="password"
                                     name="password"
                                     id="password"
+                                    onChange={handleChange}
+                                    value={signupInfo.password}
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <label className="sr-only" htmlFor="location">
+                                    Location
+                                </label>
+                                <input
+                                    placeholder="Location"
+                                    className="appearance-none relative block w-full px-3 py-3 border border-gray-700 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    required=""
+                                    autoComplete="location"
+                                    type="location"
+                                    name="location"
+                                    id="location"
+                                    onChange={handleChange}
+                                    value={signupInfo.location}
                                 />
                             </div>
                         </div>
@@ -92,6 +170,7 @@ export default function Signup() {
                         </div>
                     </form>
                 </div>
+                <ToastContainer/>
                 <div className="px-8 py-4 bg-gray-700 text-center">
                     <span className="text-gray-400">Have an account?</span>
                     <Link className="font-medium text-indigo-500 hover:text-indigo-400" to="/login">

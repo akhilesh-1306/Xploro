@@ -9,9 +9,11 @@ const MONGO_URL = process.env.MONGO_URL;
 
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const AuthRouter = require("./routes/AuthRouter");
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use("/auth",AuthRouter);
 
 mongoose.connect(MONGO_URL)
 .then(()=>{

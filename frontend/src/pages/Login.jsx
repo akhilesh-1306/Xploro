@@ -1,15 +1,62 @@
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import {Link, Navigate, useNavigate} from "react-router-dom"
+import {ToastContainer} from "react-toastify"
+import { handleError,handleSuccess } from '../utils';
 
-export default function Signup() {
+export default function Login() {
 
-    const navigate = useNavigate();
-
-    const handleSubmit = (e) =>{
+    const [loginInfo,setLoginInfo] = useState({
+        email : "",
+        password : "",
+      });
+    
+      const navigate = useNavigate();
+    
+      const handleChange = (e)=>{
+        const {name,value} = e.target;
+        const copyLoginInfo = {...loginInfo};
+        copyLoginInfo[name] = value;
+        setLoginInfo(copyLoginInfo);
+      }
+    
+      const handleLogin = async (e)=>{
         e.preventDefault();
-        setTimeout(()=>{
-            navigate("/home")
-          },1000)
-    }
+        const {email,password} = loginInfo;
+        if(!email || !password){
+          return handleError("All fields are required")
+        }
+        try{
+          const url = "http://localhost:8080/auth/login";
+          const response = await fetch(url,{
+            method:"POST",
+            headers : {
+              "Content-type" : "application/json"
+            },
+            body : JSON.stringify(loginInfo),
+          });
+          const result = await response.json();
+          const {success,message,jwtToken,name,error} = result;
+          if(success){
+            handleSuccess(message);
+            localStorage.setItem("token",jwtToken);
+            localStorage.setItem("loggedInUser",name);
+    
+            setTimeout(()=>{
+              navigate("/home")
+            },1000)
+          }
+          else if(error){
+            const details = error?.details[0].message;
+            handleError(details);
+          }
+          else if(!success){
+            handleError(message);
+          }
+        }
+        catch(err){
+          handleError(err);
+        }
+      }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -25,7 +72,7 @@ export default function Signup() {
                         Welcome Back
                     </h2>
                     <p className="mt-4 text-center text-gray-400">Login to continue</p>
-                    <form method="POST" action="#" className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                    <form className="mt-8 space-y-6" onSubmit={handleLogin}>
                         <div className="rounded-md shadow-sm">
                             <div>
                                 <label className="sr-only" htmlFor="email">
@@ -39,6 +86,8 @@ export default function Signup() {
                                     type="email"
                                     name="email"
                                     id="email"
+                                    onChange={handleChange}
+                                    value={loginInfo.email}
                                 />
                             </div>
                             <div className="mt-4">
@@ -53,6 +102,8 @@ export default function Signup() {
                                     type="password"
                                     name="password"
                                     id="password"
+                                    onChange={handleChange}
+                                    value={loginInfo.password}
                                 />
                             </div>
                         </div>
@@ -87,6 +138,7 @@ export default function Signup() {
                         </div>
                     </form>
                 </div>
+                <ToastContainer/>
                 <div className="px-8 py-4 bg-gray-700 text-center">
                     <span className="text-gray-400">Don't have an account?</span>
                     <Link className="font-medium text-indigo-500 hover:text-indigo-400" to="/signup">

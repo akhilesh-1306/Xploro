@@ -1,7 +1,9 @@
 import NavScroll from "../Navbar"
 
-
 const Home = () => {
+
+    
+
     return(
         <div className="home">
             <NavScroll/>
