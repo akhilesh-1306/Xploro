@@ -8,9 +8,9 @@ import Navbar from 'react-bootstrap/Navbar';
 function NavScroll() { 
 
   return (
-    <Navbar expand="lg" className="bg-black text-white">
+    <Navbar expand="lg" className="bg-black text-white sticky-top">
       <Container fluid>
-        <Navbar.Brand href="#" className='text-white'>Xploro</Navbar.Brand>
+        <Navbar.Brand href="/home" className='text-white'>Xploro</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" className="bg-white" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -18,8 +18,8 @@ function NavScroll() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1" className='text-white'>Home</Nav.Link>
-            <Nav.Link href="#action2" className='text-white'>Host</Nav.Link>
+            <Nav.Link href="/home" className='text-white'>Home</Nav.Link>
+            <Nav.Link href="/host" className='text-white'>Host</Nav.Link>
           </Nav>
           <Form className="d-flex mx-3">
               <Form.Control
