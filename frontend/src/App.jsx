@@ -2,6 +2,7 @@ import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import Home from "./pages/Home";
 import Host from "./pages/Host"
+import Profile from "./pages/Profile";
 import { Route,Routes,Navigate,useNavigate } from "react-router-dom"
 // import RefreshHandler from "./RefreshHandler";
 import { useState } from "react";
@@ -23,6 +24,7 @@ function App() {
         <Route path="/signup" element={<Signup/>} />
         <Route path="/home" element={<Home/>} />
         <Route path="/host" element={<Host/>} />
+        <Route path="/profile" element={<Profile/>} />
       </Routes>
     </div>
   )

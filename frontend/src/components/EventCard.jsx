@@ -1,12 +1,13 @@
+import React from 'react';
 
-const EventCard = () => {
+const EventCard = ({ event }) => {
     return (
         <div className="event-card">
             <div className="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg flex flex-col sm:flex-row items-center sm:items-start">
                 {/* Left Image Section */}
                 <div className="w-full sm:w-1/3 flex-shrink-0">
                     <img
-                        src="https://via.placeholder.com/150"
+                        src={event.image || "https://via.placeholder.com/150"}
                         alt="Event Image"
                         className="w-full h-full object-cover rounded-lg"
                     />
@@ -17,18 +18,18 @@ const EventCard = () => {
                     <div>
                         {/* Title */}
                         <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                            Event Title
+                            {event.activityTitle}
                         </h2>
 
                         {/* Description */}
                         <p className="text-gray-600 mb-4">
-                            This is a brief description of the event. Join us for an amazing experience!
+                            {event.description}
                         </p>
                     </div>
 
                     {/* Date */}
                     <p className="text-sm text-gray-500 mb-4">
-                        Date: October 12, 2024
+                        Date: {event.date} | Time: {event.time} | Location : {event.location}
                     </p>
 
                     {/* Join Button */}
@@ -37,9 +38,8 @@ const EventCard = () => {
                     </button>
                 </div>
             </div>
-
         </div>
-    )
-}
+    );
+};
 
 export default EventCard;

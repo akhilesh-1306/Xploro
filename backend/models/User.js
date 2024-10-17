@@ -17,7 +17,17 @@ const UserSchema = new Schema({
     location : {
         type : String,
         required : true,
-    }   
+    },
+    joinedEvents: {
+        type: [mongoose.Schema.Types.ObjectId], 
+        ref: "event",
+        default: [],
+    },
+    hostedEvents: {
+        type: [mongoose.Schema.Types.ObjectId], 
+        ref: "event", 
+        default: [],
+    }  
 })
 
 const UserModel = mongoose.model("user",UserSchema);

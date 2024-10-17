@@ -1,5 +1,13 @@
+import NavScroll from "../Navbar";
+import UserDetails from "../components/UserDetails";
+
 const Profile = () =>{
     return(
-        <h1>Profile</h1>
+        <div className="profile">
+            <NavScroll/>
+            <UserDetails/>
+        </div>
     )
 }
+
+export default Profile;

@@ -10,10 +10,14 @@ const MONGO_URL = process.env.MONGO_URL;
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const AuthRouter = require("./routes/AuthRouter");
+const ProfileRouter = require("./routes/ProfileRouter");
+const EventRouter = require("./routes/EventRouter");
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/auth",AuthRouter);
+app.use("/profile",ProfileRouter);
+app.use("/event",EventRouter);
 
 mongoose.connect(MONGO_URL)
 .then(()=>{

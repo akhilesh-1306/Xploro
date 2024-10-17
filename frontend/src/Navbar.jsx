@@ -30,7 +30,7 @@ function NavScroll() {
               />
               <Button variant="outline-light">Search</Button>
             </Form>
-          <Nav.Link href="#action2" className='text-white'>{localStorage.getItem("loggedInUser")}</Nav.Link>
+          <Nav.Link href="/profile" className='text-white'>{localStorage.getItem("loggedInUser")}</Nav.Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>

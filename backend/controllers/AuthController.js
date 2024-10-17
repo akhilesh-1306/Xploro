@@ -16,14 +16,14 @@ const signup = async (req,res)=>{
         const userModel = new UserModel({name,email,password,location});
         userModel.password = await bcrypt.hash(password,10);
         await userModel.save();
-        res.status(201)
+        return res.status(201)
             .json({
                 message : "Signup successful",
                 success : true,
             })
     }
     catch(err){
-        res.status(500)
+        return res.status(500)
             .json({
                 message : "Internal server error",
                 success : false,
