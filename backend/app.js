@@ -12,12 +12,14 @@ const cors = require("cors");
 const AuthRouter = require("./routes/AuthRouter");
 const ProfileRouter = require("./routes/ProfileRouter");
 const EventRouter = require("./routes/EventRouter");
+const SearchRouter = require("./routes/SearchRouter");
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/auth",AuthRouter);
 app.use("/profile",ProfileRouter);
 app.use("/event",EventRouter);
+app.use("/search",SearchRouter);
 
 mongoose.connect(MONGO_URL)
 .then(()=>{

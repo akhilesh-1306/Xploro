@@ -1,13 +1,41 @@
 import React from 'react';
+import {Link, Navigate, useNavigate} from "react-router-dom"
+import { handleError } from '../utils';
 
 const EventCard = ({ event }) => {
+    // Function to handle the "Join Now" button click
+    const navigate = useNavigate();
+    const handleJoin = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`http://localhost:8080/event/join/${event._id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert('You have successfully joined the event!');
+                navigate("/profile");
+            } else {
+                console.error('Failed to join the event');
+            }
+        } catch (error) {
+            // handleError(data.message);
+            console.error('Error joining the event:', error);
+        }
+    };
+
     return (
         <div className="event-card">
             <div className="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg flex flex-col sm:flex-row items-center sm:items-start">
                 {/* Left Image Section */}
                 <div className="w-full sm:w-1/3 flex-shrink-0">
                     <img
-                        src={event.image || "https://via.placeholder.com/150"}
+                        src={event.image || "https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                         alt="Event Image"
                         className="w-full h-full object-cover rounded-lg"
                     />
@@ -33,7 +61,10 @@ const EventCard = ({ event }) => {
                     </p>
 
                     {/* Join Button */}
-                    <button className="self-start bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300">
+                    <button
+                        onClick={handleJoin} // Add onClick handler to call handleJoin
+                        className="self-start bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300"
+                    >
                         Join Now
                     </button>
                 </div>
