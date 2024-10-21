@@ -18,6 +18,12 @@ const UserSchema = new Schema({
         type : String,
         required : true,
     },
+    latitude: {
+        type: Number,
+    },
+    longitude: {
+        type: Number,
+    },
     joinedEvents: {
         type: [mongoose.Schema.Types.ObjectId], 
         ref: "event",

@@ -128,6 +128,31 @@ const UserDetails = () => {
     }
   };
 
+  // Function to delete a hosted event
+  const deleteEvent = async (eventId) => {
+    try {
+      const url = `http://localhost:8080/event/delete/${eventId}`; // Your API for deleting an event
+      const token = localStorage.getItem("token");
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const result = await response.json();
+      if (response.ok) {
+        // setRefresh("deleted");
+        navigate("/home");
+        handleSuccess("Event deleted successfully");
+      } else {
+        handleError(result.message);
+      }
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
 
   useEffect(() => {
     profileDetails(); // Call profileDetails when the page loads
@@ -289,8 +314,14 @@ const UserDetails = () => {
           <ul className="space-y-2">
             {userDetails.hostedEvents && userDetails.hostedEvents.length > 0 ? (
               userDetails.hostedEvents.map((event) => (
-                <li key={event._id} className="border-b border-gray-300 pb-2">
-                  {event.activityTitle} - {event.date}
+                <li key={event._id} className="border-b border-gray-300 pb-2 flex justify-between items-center">
+                  <span>{event.activityTitle} - {event.date}</span>
+                  <button
+                    onClick={() => deleteEvent(event._id)} // Function to delete event
+                    className="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-300"
+                  >
+                    Delete
+                  </button>
                 </li>
               ))
             ) : (
@@ -298,6 +329,7 @@ const UserDetails = () => {
             )}
           </ul>
         </div>
+
       </div>
     </div>
   );

@@ -1,7 +1,5 @@
 const EventModel = require("../models/Event")
 
-
-
 const searchEvents = async (req, res) => {
     const { query } = req.query; // Get the search query from request
 
