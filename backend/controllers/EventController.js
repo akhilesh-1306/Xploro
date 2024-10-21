@@ -149,6 +149,51 @@ const joinEvent = async (req, res) => {
     }
 };
 
+const deleteEvent = async (req, res) => {
+  try {
+    const token = req.header('Authorization') && req.header('Authorization').split(' ')[1];
+
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' });
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure you have JWT_SECRET in your environment variables
+    const userId = decoded.id; // Get the user ID from the decoded token
+
+    const eventId = req.params.eventId;
+
+    // Find the event by ID
+    const event = await Event.findById(eventId);
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Check if the logged-in user is the host of the event
+    if (event.host.toString() !== userId) {
+      return res.status(403).json({ message: 'You are not authorized to delete this event' });
+    }
+
+    // Delete the event
+    await Event.findByIdAndDelete(eventId);
+
+    // Remove the event from the user's hostedEvents array
+    await User.findByIdAndUpdate(userId, {
+      $pull: { hostedEvents: eventId }
+    });
+
+    res.status(200).json({ message: 'Event deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Invalid token' });
+    } else if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expired' });
+    }
+    res.status(500).json({ message: 'Server error' });
+  }
+}
 
 
 
@@ -157,4 +202,5 @@ module.exports = {
     addEvent,
     allEvents,
     joinEvent,
+    deleteEvent,
 }

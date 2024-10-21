@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {addEvent, allEvents, joinEvent, searchEvents} = require("../controllers/EventController")
+const {addEvent, allEvents, joinEvent, deleteEvent} = require("../controllers/EventController")
 const multer = require("multer");
 // const path = require("path");
 
@@ -19,6 +19,7 @@ router.get("/",allEvents);
 // router.post("/addEvent",addEvent);
 router.post("/addEvent", upload.single("image"), addEvent);
 router.post('/join/:eventId', joinEvent);
+router.delete("/delete/:eventId",deleteEvent);
 
 
 module.exports = router;
