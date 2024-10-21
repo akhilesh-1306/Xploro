@@ -1,42 +1,95 @@
 const EventModel = require("../models/Event")
 const UserModel = require("../models/User")
 const jwt = require("jsonwebtoken")
+const { validationResult } = require("express-validator")
+
+// const addEvent = async (req, res) => {
+//     try {
+//         const secret = process.env.JWT_SECRET;
+//         const token = req.headers.authorization?.split(" ")[1];
+//         console.log(token);
+//         const { name, email, activityTitle, tags, noOfPeople, date, time, location, description } = req.body;
+//         console.log(secret);
+//         const decoded = jwt.verify(token, secret);
+//         console.log(decoded);
+//         const userId = decoded._id;
+//         const eventModel = new EventModel({
+//             name, email, activityTitle, tags, noOfPeople, date, time, location, description,
+//             createdBy: userId
+//         });
+//         console.log(eventModel);
+//         await eventModel.save();
+
+
+//         await UserModel.findByIdAndUpdate(userId, {
+//             $push: { hostedEvents: eventModel._id },
+//         });
+//         return res.status(201)
+//             .json({
+//                 message: "Signup successful",
+//                 success: true,
+//             })
+//     }
+//     catch (err) {
+//         return res.status(500)
+//             .json({
+//                 message: "Internal server error",
+//                 success: false,
+//             })
+//     }
+// }
 
 const addEvent = async (req, res) => {
     try {
-        const secret = process.env.JWT_SECRET;
-        const token = req.headers.authorization?.split(" ")[1];
-        console.log(token);
-        const { name, email, activityTitle, tags, noOfPeople, date, time, location, description } = req.body;
-        console.log(secret);
-        const decoded = jwt.verify(token, secret);
-        console.log(decoded);
-        const userId = decoded._id;
-        const eventModel = new EventModel({
-            name, email, activityTitle, tags, noOfPeople, date, time, location, description,
-            createdBy: userId
-        });
-        console.log(eventModel);
-        await eventModel.save();
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, error: errors.array() });
+      }
+      const secret = process.env.JWT_SECRET;
+      const token = req.headers.authorization?.split(" ")[1];
+      const decoded = jwt.verify(token, secret);
+      const userId = decoded._id;
 
-
-        await UserModel.findByIdAndUpdate(userId, {
-            $push: { hostedEvents: eventModel._id },
-        });
-        return res.status(201)
-            .json({
-                message: "Signup successful",
-                success: true,
-            })
+      const { name, email, activityTitle, tags, noOfPeople, date, time, location, description } = req.body;
+  
+      // File path for the image
+      const imagePath = req.file ? req.file.path.replace(/\\/g, "/") : null;
+    //   console.log(imagePath);
+  
+      // Create a new event instance
+      const newEvent = new EventModel({
+        name,
+        email,
+        activityTitle,
+        tags,
+        noOfPeople,
+        date,
+        time,
+        location,
+        description,
+        image: imagePath,
+        createdBy: userId, // Assuming you have user authentication
+      });
+  
+      // Save the event in the database
+      await newEvent.save();
+      await UserModel.findByIdAndUpdate(userId, {
+                    $push: { hostedEvents: newEvent._id },
+                });
+      return res.status(201).json({
+        success: true,
+        message: "Event created successfully!",
+        event: newEvent,
+      });
+    } catch (error) {
+      // Handle errors
+      return res.status(500).json({
+        success: false,
+        message: "Error creating event",
+        error: error.message,
+      });
     }
-    catch (err) {
-        return res.status(500)
-            .json({
-                message: "Internal server error",
-                success: false,
-            })
-    }
-}
+  };
 
 const allEvents = async (req, res) => {
     try {

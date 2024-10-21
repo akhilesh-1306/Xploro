@@ -1,10 +1,15 @@
 import React from 'react';
-import {Link, Navigate, useNavigate} from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { handleError } from '../utils';
+import { useEffect } from 'react';
 
 const EventCard = ({ event }) => {
     // Function to handle the "Join Now" button click
     const navigate = useNavigate();
+    
+    // const checkImage = () => {
+    //     console.log(event.image);
+    // }
     const handleJoin = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -24,10 +29,14 @@ const EventCard = ({ event }) => {
                 console.error('Failed to join the event');
             }
         } catch (error) {
-            // handleError(data.message);
+            handleError(error.message);
             console.error('Error joining the event:', error);
         }
     };
+
+    // useEffect(() => {
+    //     checkImage();  // Call the function immediately on mount or on event.image change
+    // }, [event.image]);
 
     return (
         <div className="event-card">
@@ -35,8 +44,11 @@ const EventCard = ({ event }) => {
                 {/* Left Image Section */}
                 <div className="w-full sm:w-1/3 flex-shrink-0">
                     <img
-                        src={event.image || "https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
-                        alt="Event Image"
+                        // src={event.image || "https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                        // alt="Event Image"
+
+                        src={`http://localhost:8080/${event.image}` || "https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                        alt={event.activityTitle}
                         className="w-full h-full object-cover rounded-lg"
                     />
                 </div>

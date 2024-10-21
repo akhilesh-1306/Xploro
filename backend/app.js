@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express")
 const mongoose = require("mongoose")
 const app = express();
+const path = require("path");
 
 const PORT = process.env.PORT || 8080
 const MONGO_URL = process.env.MONGO_URL;
@@ -20,6 +21,7 @@ app.use("/auth",AuthRouter);
 app.use("/profile",ProfileRouter);
 app.use("/event",EventRouter);
 app.use("/search",SearchRouter);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 mongoose.connect(MONGO_URL)
 .then(()=>{
