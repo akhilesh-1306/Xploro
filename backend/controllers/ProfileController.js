@@ -14,7 +14,7 @@ const getProfileDetails = async (req, res) => {
         const user = await UserModel.findById(userId)
             .populate('joinedEvents')   // Populate joined events with full event details
             .populate('hostedEvents');  // Populate hosted events with full event details
-
+        // console.log(user);
         if (!user) {
             return res.status(404).json({
                 message: "User not found",
