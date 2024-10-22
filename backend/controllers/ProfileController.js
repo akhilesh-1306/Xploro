@@ -10,10 +10,9 @@ const getProfileDetails = async (req, res) => {
         const decoded = jwt.verify(token, secret);
         const userId = decoded._id;
 
-        // Find the user by ID and populate joined and hosted events
         const user = await UserModel.findById(userId)
-            .populate('joinedEvents')   // Populate joined events with full event details
-            .populate('hostedEvents');  // Populate hosted events with full event details
+            .populate('joinedEvents')   
+            .populate('hostedEvents');  
         // console.log(user);
         if (!user) {
             return res.status(404).json({

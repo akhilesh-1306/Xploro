@@ -5,6 +5,7 @@ import Host from "./pages/Host"
 import Profile from "./pages/Profile";
 import SearchResultPage from "./pages/SearchResultPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ForYou from "./pages/ForYou";
 import { Route,Routes,Navigate,useNavigate } from "react-router-dom"
 // import RefreshHandler from "./RefreshHandler";
 import { useState } from "react";
@@ -28,6 +29,7 @@ function App() {
         <Route path="/host" element={<Host/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/search" element={<SearchResultPage />} />
+        <Route path="/for-you" element={<ForYou/>} />
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </div>

@@ -14,6 +14,7 @@ const AuthRouter = require("./routes/AuthRouter");
 const ProfileRouter = require("./routes/ProfileRouter");
 const EventRouter = require("./routes/EventRouter");
 const SearchRouter = require("./routes/SearchRouter");
+const UserInteractionRouter = require("./routes/UserInteractionRouter");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -21,6 +22,7 @@ app.use("/auth",AuthRouter);
 app.use("/profile",ProfileRouter);
 app.use("/event",EventRouter);
 app.use("/search",SearchRouter);
+app.use("/user",UserInteractionRouter);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 mongoose.connect(MONGO_URL)

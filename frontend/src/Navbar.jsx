@@ -91,6 +91,7 @@ function NavScroll() {
             <Nav className="me-auto my-2 my-lg-0" navbarScroll>
               <Nav.Link href="/home" className="text-black">Home</Nav.Link>
               <Nav.Link href="/host" className="text-black">Host</Nav.Link>
+              <Nav.Link href="/for-you" className="text-black">For You</Nav.Link>
             </Nav>
 
             {/* Search Form */}
@@ -103,7 +104,7 @@ function NavScroll() {
                 onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
                 aria-label="Search"
               />
-              <Button variant="outline-light" type="submit" className="text-black"><i class="fa-solid fa-magnifying-glass"></i></Button>
+              <Button variant="outline-light" type="submit" className="text-black"><i className="fa-solid fa-magnifying-glass"></i></Button>
             </Form>
 
             <Nav.Link href="/profile" className="text-black">
