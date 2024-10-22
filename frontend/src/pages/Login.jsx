@@ -108,7 +108,7 @@ export default function Login() {
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between mt-4">
+                        {/* <div className="flex items-center justify-between mt-4">
                             <div className="flex items-center">
                                 <input
                                     className="h-4 w-4 text-indigo-500 focus:ring-indigo-400 border-gray-600 rounded"
@@ -126,7 +126,7 @@ export default function Login() {
                                     Forgot your password?
                                 </a>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div>
                             <button

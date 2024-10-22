@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import NavScroll from "../Navbar";
 import EventCard from "../components/EventCard";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const Home = () => {
     const [events, setEvents] = useState([]);
@@ -14,8 +15,8 @@ const Home = () => {
         const dLat = ((lat2 - lat1) * Math.PI) / 180;
         const dLon = ((lon2 - lon1) * Math.PI) / 180;
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) *
-                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     };
@@ -29,10 +30,14 @@ const Home = () => {
                 }
             });
             const data = await response.json();
-            // console.log(data);
-            setUserLocation({ latitude: data.user.latitude, longitude: data.user.longitude });
+            if (data.success) {
+                setUserLocation({ latitude: data.user.latitude, longitude: data.user.longitude });
+            } else {
+                toast.error("Failed to fetch user location.");
+            }
         } catch (error) {
             console.error("Error fetching user location:", error);
+            toast.error("Error fetching user location.");
         }
     };
 
@@ -51,11 +56,14 @@ const Home = () => {
                     return distance <= 75; // Show events within 75 km
                 });
                 setEvents(filteredEvents);
+                // toast.success("Events fetched successfully!"); // Success toast
             } else {
                 console.error("Failed to fetch events");
+                toast.error("Failed to fetch events.");
             }
         } catch (error) {
             console.error("Error fetching events:", error);
+            toast.error("Error fetching events.");
         } finally {
             setLoading(false);
         }
@@ -77,11 +85,11 @@ const Home = () => {
             <div className="home-page">
                 {loading ? (
                     <div className="flex items-center justify-center min-h-screen">
-                    <div
-                      className="w-10 h-10 border-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"
-                    ></div>
-                  </div>
-                  
+                        <div
+                            className="w-10 h-10 border-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"
+                        ></div>
+                    </div>
+
                 ) : (
                     <div className="events">
                         {events.map(event => (
@@ -90,6 +98,7 @@ const Home = () => {
                     </div>
                 )}
             </div>
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </>
     );
 };

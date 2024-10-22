@@ -1,0 +1,27 @@
+.navbar-wrapper {
+    display: flex;
+    justify-content: center; /* Center the navbar */
+    margin: 0 auto; /* Center the navbar horizontally */
+    padding: 10px 20px; /* Add some padding */
+  }
+  
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1); /* Glass effect background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    border-radius: 15px; /* Rounded corners */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  }
+  
+  .text-white {
+    color: white !important; /* Ensure text color is white */
+  }
+  
+  .nav-link {
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .nav-link:hover {
+    color: #FFD700; /* Change color on hover (Gold color) */
+  }
+  
