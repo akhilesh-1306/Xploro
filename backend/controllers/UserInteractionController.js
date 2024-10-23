@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const axios = require('axios');
 const UserInteractionModel = require("../models/UserInteraction");
+const EventModel = require("../models/Event");
 
 const addUserInteraction = async (req, res) => {
     const { eventId } = req.body;
@@ -38,9 +39,9 @@ const triggerRecommendation = async (req, res) => {
     const userId = decoded._id;
 
     try {
-        const interaction = await UserInteraction.findOne({ userId }).populate('interactions');
-
-        if (!interaction || interaction.interactions.length < 100) {
+        const interaction = await UserInteractionModel.findOne({ userId }).populate('interactions');
+        // console.log(interaction);
+        if (!interaction || interaction.interactions.length < 10) {
             return res.status(400).json({
                 success: false,
                 message: 'Not enough interactions to generate recommendations'
@@ -50,14 +51,35 @@ const triggerRecommendation = async (req, res) => {
         // Prepare data for recommendation system (e.g., event IDs and tags)
         const eventIds = interaction.interactions.map(event => event._id);
         const eventTags = interaction.interactions.map(event => event.tags).flat();
+        // console.log(eventTags);
 
+        const allEvents = await EventModel.find();
+
+        const extractEventIdsAndTags = (events) => {
+            // Create two arrays: one for event IDs and one for tags
+            const allEventIds = events.map(event => event._id);
+            const allEventTags = events.map(event => event.tags.split(',').map(tag => tag.trim()));
+        
+            return {
+                allEventIds,
+                allEventTags
+            };
+        };
+        
+        // Example usage
+        
+        const { allEventIds, allEventTags } = extractEventIdsAndTags(allEvents);
+        // console.log(allEventTags);
         // Make a request to the recommendation system running on a different server
-        const recommendationResponse = await axios.post('http://127.0.0.1:5000/recommend', {
-            userId,
-            events: eventIds,
-            tags: eventTags
-        });
-
+        const recommendationResponse = await axios.post('http://127.0.0.1:5000/recommend', 
+            {
+                interactions: allEventIds,  // Interaction-related data
+                tags: allEventTags,         // Tags-related data
+                interactionsUser: eventIds, // Additional user interaction data
+                tagsUser: eventTags         // Additional user tags data
+            }
+    );
+        // console.log(recommendationResponse);
         // Send the recommended event IDs back to the user
         res.status(200).json({
             success: true,

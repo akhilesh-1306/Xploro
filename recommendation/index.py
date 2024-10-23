@@ -3,74 +3,110 @@
 # from sklearn.feature_extraction.text import TfidfVectorizer
 # from sklearn.metrics.pairwise import sigmoid_kernel
 
-# def give_rec(input_data):
-#     data = pd.DataFrame(input_data)
+# def give_rec(interactions, tags, interactions_user, tags_user):
+#     # Create DataFrames for the events and user data
+#     event_data = pd.DataFrame({'interactions': interactions, 'tags': tags})
+#     user_data = pd.DataFrame({'interactionsUser': interactions_user, 'tagsUser': tags_user})
+    
+#     # Fill missing tags with empty strings
+#     event_data['tags'] = event_data['tags'].fillna('')
+#     user_data['tagsUser'] = user_data['tagsUser'].fillna('')
 
-#     data['description'] = data['description'].fillna('')
-#     data['tags'] = data['tags'].fillna('')
-
-#     data['combined'] = data['description'] + ' ' + data['tags']
-
+#     # Vectorize the event tags and user tags using TF-IDF
 #     tfv = TfidfVectorizer(min_df=3, max_features=None, strip_accents='unicode', 
 #                           analyzer='word', token_pattern=r'\w{1,}', stop_words='english', 
 #                           ngram_range=(1, 3))
-#     tfv_matrix = tfv.fit_transform(data['combined'])
 
-#     sig = sigmoid_kernel(tfv_matrix, tfv_matrix)
-#     indices = pd.Series(data.index, index=data['activityTitle']).drop_duplicates()
-#     activity_title = data['activityTitle']
-#     idx = indices[activity_title]
-#     sig_scores = list(enumerate(sig[idx]))
+#     # Fit and transform both event tags and user tags
+#     tfv_event_matrix = tfv.transform(event_data['tags'])
+#     tfv_user_matrix = tfv.transform(user_data['tagsUser'])  # Use transform instead of fit_transform for user data
 
-#     sig_scores = sorted(sig_scores, key=lambda x: x[1], reverse=True)
+#     # Calculate the sigmoid kernel similarity between event and user matrices
+#     sig = sigmoid_kernel(tfv_event_matrix, tfv_user_matrix)
 
-#     sig_scores = sig_scores[1:11] 
-#     activity_indices = [i[0] for i in sig_scores]
-#     return data['activityTitle'].iloc[activity_indices]
+#     # Find indices of the events user interacted with
+#     interacted_event_ids = user_data['interactionsUser']
+#     interacted_indices = event_data.index[event_data['interactions'].isin(interacted_event_ids)].tolist()
 
+#     if not interacted_indices:
+#         return []  # Return an empty list if no interactions are found
 
+#     # Get the average similarity score for each event, based on the user's interacted events
+#     all_scores = np.zeros(sig.shape[0])
+#     for idx in interacted_indices:
+#         all_scores += sig[idx]
+#     avg_scores = all_scores / len(interacted_indices)
+
+#     # Get the indices of top 10 recommendations, excluding the already interacted events
+#     recommended_indices = np.argsort(avg_scores)[::-1]  # Sort scores in descending order
+#     recommended_indices = [i for i in recommended_indices if i not in interacted_indices][:10]
+
+#     # Return the event._id of the recommended events
+#     recommended_event_ids = event_data['interactions'].iloc[recommended_indices].tolist()
+    
+#     return recommended_event_ids
 
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import sigmoid_kernel
 
-def give_rec(input_data, user_data):
-    # Convert input data into DataFrame
-    data = pd.DataFrame(input_data)
+def give_rec(interactions, tags, interactions_user, tags_user):
+    # Create DataFrames for the events and user data
+    event_data = pd.DataFrame({'interactions': interactions, 'tags': tags})
+    user_data = pd.DataFrame({'interactionsUser': interactions_user, 'tagsUser': tags_user})
     
-    # Fill missing descriptions and tags
-    data['description'] = data['description'].fillna('')
-    data['tags'] = data['tags'].fillna('')
-    
-    # Combine description and tags for vectorization
-    data['combined'] = data['description'] + ' ' + data['tags']
-    
-    # Vectorize the text using TF-IDF
-    tfv = TfidfVectorizer(min_df=3, max_features=None, strip_accents='unicode', 
+    # Fill missing tags with empty strings
+    event_data['tags'] = event_data['tags'].fillna('')
+    user_data['tagsUser'] = user_data['tagsUser'].fillna('')
+
+    # Join tags list into a single string for each event
+    event_data['tags'] = event_data['tags'].apply(lambda x: ' '.join(x) if isinstance(x, list) else x)
+    user_data['tagsUser'] = user_data['tagsUser'].apply(lambda x: ' '.join(x) if isinstance(x, list) else x)
+
+    # Vectorize the event tags and user tags using TF-IDF
+    tfv = TfidfVectorizer(min_df=1, max_features=None, strip_accents='unicode', 
                           analyzer='word', token_pattern=r'\w{1,}', stop_words='english', 
                           ngram_range=(1, 3))
-    tfv_matrix = tfv.fit_transform(data['combined'])
 
-    # Calculate sigmoid kernel similarity
-    sig = sigmoid_kernel(tfv_matrix, tfv_matrix)
-    
+    # Fit and transform both event tags and user tags
+    tfv_event_matrix = tfv.fit_transform(event_data['tags'])
+    tfv_user_matrix = tfv.transform(user_data['tagsUser'])  # Use transform instead of fit_transform for user data
+
+    # Check the shapes of the matrices
+    print(f"Event matrix shape: {tfv_event_matrix.shape}")
+    print(f"User matrix shape: {tfv_user_matrix.shape}")
+
+    # Calculate the sigmoid kernel similarity between event and user matrices
+    sig = sigmoid_kernel(tfv_event_matrix, tfv_user_matrix)
+
+    # Check the shape of the similarity matrix
+    print(f"Sigmoid kernel shape: {sig.shape}")
+
     # Find indices of the events user interacted with
-    interacted_event_ids = user_data['interactions']
-    interacted_indices = data.index[data['_id'].isin(interacted_event_ids)].tolist()
+    interacted_event_ids = user_data['interactionsUser']
+    interacted_indices = event_data.index[event_data['interactions'].isin(interacted_event_ids)].tolist()
 
     if not interacted_indices:
-        return []  # No recommendations if no valid interactions
+        return []  # Return an empty list if no interactions are found
 
-    # Get the recommendations for each interaction (using the average score)
+    # Ensure all_scores array has the right dimensions
     all_scores = np.zeros(sig.shape[0])
+
+    # Add similarity scores for each interacted event
     for idx in interacted_indices:
-        all_scores += sig[idx]
+        if idx < sig.shape[1]:  # Ensure the index is within bounds of the similarity matrix
+            all_scores += sig[:, idx]
+        else:
+            print(f"Index {idx} is out of bounds for the similarity matrix.")
+
     avg_scores = all_scores / len(interacted_indices)
-    
-    # Get top 10 recommendations excluding the already interacted events
-    recommended_indices = np.argsort(avg_scores)[::-1]  # Sort in descending order
+
+    # Get the indices of top 10 recommendations, excluding the already interacted events
+    recommended_indices = np.argsort(avg_scores)[::-1]  # Sort scores in descending order
     recommended_indices = [i for i in recommended_indices if i not in interacted_indices][:10]
-    
+
     # Return the event._id of the recommended events
-    return data['_id'].iloc[recommended_indices].tolist()
+    recommended_event_ids = event_data['interactions'].iloc[recommended_indices].tolist()
+    
+    return recommended_event_ids

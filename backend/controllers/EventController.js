@@ -171,11 +171,38 @@ const deleteEvent = async (req, res) => {
   }
 }
 
+const getOneEvent = async (req, res) => {
+  try {
+      const eventId = req.params.eventId;
 
+      // Find the event by its ID
+      const event = await EventModel.findById(eventId);
+
+      if (!event) {
+          return res.status(404).json({
+              success: false,
+              message: 'Event not found',
+          });
+      }
+
+      // Send the event details
+      return res.status(200).json({
+          success: true,
+          event: event, // Return the event object
+      });
+  } catch (error) {
+      console.error('Error fetching event:', error);
+      return res.status(500).json({
+          success: false,
+          message: 'Server error. Could not fetch the event.',
+      });
+  }
+}
 
 module.exports = {
   addEvent,
   allEvents,
   joinEvent,
   deleteEvent,
+  getOneEvent,
 }

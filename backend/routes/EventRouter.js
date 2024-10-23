@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {addEvent, allEvents, joinEvent, deleteEvent} = require("../controllers/EventController")
+const {addEvent, allEvents, joinEvent, deleteEvent, getOneEvent} = require("../controllers/EventController")
 const multer = require("multer");
 // const path = require("path");
 
@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
   const upload = multer({ storage });
 
 router.get("/",allEvents);
+router.get("/:eventId",getOneEvent);
 // router.post("/addEvent",addEvent);
 router.post("/addEvent", upload.single("image"), addEvent);
 router.post('/join/:eventId', joinEvent);
