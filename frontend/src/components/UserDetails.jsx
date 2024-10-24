@@ -296,20 +296,30 @@ const UserDetails = () => {
       {/* Events Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {/* Joined Events */}
-        <div className="events-section bg-white p-4 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Joined Events</h3>
-          <ul className="space-y-2">
-            {userDetails.joinedEvents && userDetails.joinedEvents.length > 0 ? (
-              userDetails.joinedEvents.map((event) => (
-                <li key={event._id} className="border-b border-gray-300 pb-2">
-                  {event.activityTitle} - {event.date}
-                </li>
-              ))
-            ) : (
-              <li className="text-gray-500">No events joined yet</li>
-            )}
-          </ul>
-        </div>
+       {/* Joined Events */}
+<div className="events-section bg-white p-4 rounded-lg shadow-md">
+  <h3 className="text-xl font-semibold text-gray-800 mb-4">Joined Events</h3>
+  <ul className="space-y-2">
+    {userDetails.joinedEvents && userDetails.joinedEvents.length > 0 ? (
+      userDetails.joinedEvents.map((event) => (
+        <li key={event._id} className="border-b border-gray-300 pb-2 flex justify-between items-center">
+          <span>{event.activityTitle} - {event.date}</span>
+          <div className="ml-4 flex space-x-2">
+            {/* Chat Button */}
+            <button
+              onClick={() => window.open('http://localhost:3000', '_blank')}
+              className="btn-chat bg-blue-500 text-white p-1 rounded hover:bg-blue-600 transition-all"
+            >
+              Chat
+            </button>
+          </div>
+        </li>
+      ))
+    ) : (
+      <li className="text-gray-500">No events joined yet</li>
+    )}
+  </ul>
+</div>
 
         {/* Hosted Events */}
         <div className="events-section bg-white p-4 rounded-lg shadow-md">
