@@ -41,7 +41,7 @@ const triggerRecommendation = async (req, res) => {
     try {
         const interaction = await UserInteractionModel.findOne({ userId }).populate('interactions');
         // console.log(interaction);
-        if (!interaction || interaction.interactions.length < 10) {
+        if (!interaction || interaction.interactions.length < 5) {
             return res.status(400).json({
                 success: false,
                 message: 'Not enough interactions to generate recommendations'
