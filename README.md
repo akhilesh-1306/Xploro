@@ -8,8 +8,7 @@ Xploro is a location-based event discovery application that allows users to expl
 - [Getting Started](#getting-started)
 - [Architecture](#architecture)
 - [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
+- [Contributors](#contributors)
 - [License](#license)
 
 ## Features
@@ -17,8 +16,11 @@ Xploro is a location-based event discovery application that allows users to expl
 - **Location-Based Event Filtering**:
   - Fetches the user's current geolocation and retrieves nearby events based on a specified distance (default: 75 km).
   - Uses the Haversine formula to calculate distances between the user and events, ensuring accurate results.
+- **Live Location Tracking**: The application continuously fetches the user's live location and updates the event list accordingly.
 - **Event Discovery**: Users can browse through a list of events filtered based on their location, providing a personalized experience.
 - **Search Functionality**: Users can search for events by keywords, enhancing the discovery process.
+- **In-Event Chat**: Users can communicate with other attendees of the same event through a built-in chat feature.
+- **Recommendation System**: The application uses a machine learning-based recommendation system built with scikit-learn to track user clicks and provide personalized event recommendations.
 - **Responsive Design**: The application is built with a mobile-first approach, ensuring a seamless experience on both desktop and mobile devices.
 - **Toast Notifications**: Utilizes react-toastify for providing feedback on user actions, such as successful event fetching and errors.
 - **Aesthetic UI**: The application features a sleek and modern design, with a translucent glass effect on the navbar and footer, improving visual appeal.
@@ -82,16 +84,6 @@ npm install
 npm start
 ```
 
-## Architecture
-
-### Frontend:
-- Components: Navbar, EventCard, Home, etc., organized into a logical structure
-- State management using React's built-in hooks (useState, useEffect)
-
-### Backend:
-- RESTful API built with Express.js for handling requests related to user authentication and event management
-- Database models for users and events (if applicable)
-
 ## Usage
 1. **User Registration & Login**: Users can create an account and log in using their credentials.
 2. **Location Access**: The application will request permission to access the user's geolocation.
@@ -99,31 +91,8 @@ npm start
 4. **Search Events**: Utilize the search bar to find specific events by keywords.
 5. **Hosting Events**: Users can create and host their own events, which will also be visible to others.
 
-## API Endpoints
-- `GET /profile`: Fetches user profile and location data
-- `GET /event`: Retrieves all events and applies location filtering based on user coordinates
-- `POST /event`: Allows users to create new events (requires authentication)
+## Contributors
 
-## Contributing
-Contributions are welcome! If you have suggestions or improvements, feel free to create a pull request or open an issue in the repository.
-
-1. Fork the project.
-2. Create your feature branch:
-```bash
-git checkout -b feature/YourFeature
-```
-
-3. Commit your changes:
-```bash
-git commit -m "Add some feature"
-```
-
-4. Push to the branch:
-```bash
-git push origin feature/YourFeature
-```
-
-5. Open a pull request.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
