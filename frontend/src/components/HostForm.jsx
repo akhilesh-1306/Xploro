@@ -61,7 +61,7 @@ const HostForm = () => {
       formData.append("description", description);
       formData.append("image", image); // Append the image file
 
-      const url = "http://localhost:8080/event/addEvent";
+      const url = "xploro-backend.vercel.app/event/addEvent";
       const token = localStorage.getItem("token");
       const response = await fetch(url, {
         method: "POST",

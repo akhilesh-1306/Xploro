@@ -16,7 +16,7 @@ const EventCard = ({ event }) => {
     const handleJoin = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://localhost:8080/event/join/${event._id}`, {
+            const response = await fetch(`xploro-backend.vercel.app/event/join/${event._id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const EventCard = ({ event }) => {
 
     const trackInteraction = async () => {
         const token = localStorage.getItem("token");
-        await fetch(`http://localhost:8080/user/interaction`, {
+        await fetch(`xploro-backend.vercel.app/user/interaction`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const EventCard = ({ event }) => {
                 <div className="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg flex flex-col sm:flex-row items-center sm:items-start">
                     <div className="w-full sm:w-1/3 flex-shrink-0 overflow-hidden rounded-lg transition-transform duration-300 transform hover:scale-105">
                         <img
-                            src={event.image ? `http://localhost:8080/${event.image}` : "https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                            src={event.image ? `xploro-backend.vercel.app/${event.image}` : "https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                             alt={event.activityTitle}
                             className="w-full h-full object-cover"
                         />
@@ -110,7 +110,7 @@ const EventCard = ({ event }) => {
                 </Modal.Header>
                 <Modal.Body className="bg-gray-800 text-white">
                     <img
-                        src={event.image ? `http://localhost:8080/${event.image}` : "https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                        src={event.image ? `xploro-backend.vercel.app/${event.image}` : "https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                         alt={event.activityTitle}
                         className="w-full h-full object-cover rounded-lg mb-4"
                     />
