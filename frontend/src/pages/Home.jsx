@@ -23,7 +23,7 @@ const Home = () => {
 
     const fetchUserLocation = async () => {
         try {
-            const response = await fetch('xploro-backend.vercel.app/profile', {
+            const response = await fetch('https://xploro-backend.vercel.app/profile', {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -43,7 +43,7 @@ const Home = () => {
 
     const fetchEvents = async () => {
         try {
-            const response = await fetch('xploro-backend.vercel.app/event');
+            const response = await fetch('https://xploro-backend.vercel.app/event');
             const data = await response.json();
             if (data.success) {
                 const filteredEvents = data.events.filter(event => {

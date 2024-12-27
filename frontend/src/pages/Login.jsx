@@ -26,7 +26,7 @@ export default function Login() {
           return handleError("All fields are required")
         }
         try{
-          const url = "xploro-backend.vercel.app/auth/login";
+          const url = "https://xploro-backend.vercel.app/auth/login";
           const response = await fetch(url,{
             method:"POST",
             headers : {

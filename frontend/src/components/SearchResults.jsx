@@ -15,7 +15,7 @@ const SearchResults = () => {
 
   const fetchSearchResults = async (query) => {
     try {
-      const response = await fetch(`xploro-backend.vercel.app/search?query=${encodeURIComponent(query)}`);
+      const response = await fetch(`https://xploro-backend.vercel.app/search?query=${encodeURIComponent(query)}`);
       const data = await response.json();
 
       if (data.success) {

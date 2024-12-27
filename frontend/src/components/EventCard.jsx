@@ -16,7 +16,7 @@ const EventCard = ({ event }) => {
     const handleJoin = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`xploro-backend.vercel.app/event/join/${event._id}`, {
+            const response = await fetch(`https://xploro-backend.vercel.app/event/join/${event._id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const EventCard = ({ event }) => {
 
     const trackInteraction = async () => {
         const token = localStorage.getItem("token");
-        await fetch(`xploro-backend.vercel.app/user/interaction`, {
+        await fetch(`https://xploro-backend.vercel.app/user/interaction`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

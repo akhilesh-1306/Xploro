@@ -28,7 +28,7 @@ const UserDetails = () => {
 
   const profileDetails = async () => {
     try {
-      const url = 'xploro-backend.vercel.app/profile'; // Assuming this is your profile fetch API
+      const url = 'https://xploro-backend.vercel.app/profile'; // Assuming this is your profile fetch API
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("JWT token not found.");
@@ -64,7 +64,7 @@ const UserDetails = () => {
 
   const saveProfileDetails = async () => {
     try {
-      const url = 'xploro-backend.vercel.app/profile/update'; // Your API to update profile
+      const url = 'https://xploro-backend.vercel.app/profile/update'; // Your API to update profile
       const token = localStorage.getItem("token");
       const response = await fetch(url, {
         method: 'PUT',
@@ -103,7 +103,7 @@ const UserDetails = () => {
     }
 
     try {
-      const url = 'xploro-backend.vercel.app/profile/change-password'; // Your API for password change
+      const url = 'https://xploro-backend.vercel.app/profile/change-password'; // Your API for password change
       const token = localStorage.getItem("token");
       const response = await fetch(url, {
         method: 'PUT',
@@ -132,7 +132,7 @@ const UserDetails = () => {
   // Function to delete a hosted event
   const deleteEvent = async (eventId) => {
     try {
-      const url = `xploro-backend.vercel.app/event/delete/${eventId}`; // Your API for deleting an event
+      const url = `https://xploro-backend.vercel.app/event/delete/${eventId}`; // Your API for deleting an event
       const token = localStorage.getItem("token");
       const response = await fetch(url, {
         method: 'DELETE',

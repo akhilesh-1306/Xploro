@@ -9,7 +9,7 @@ const RecommendedEvents = () => {
     useEffect(() => {
         const fetchEventDetails = async (eventId) => {
             try {
-                const response = await fetch(`xploro-backend.vercel.app/event/${eventId}`);
+                const response = await fetch(`https://xploro-backend.vercel.app/event/${eventId}`);
                 if (!response.ok) {
                     throw new Error(`Error fetching event details for ID: ${eventId}`);
                 }
@@ -24,7 +24,7 @@ const RecommendedEvents = () => {
         const fetchRecommendations = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch(`xploro-backend.vercel.app/user/recommendation`, {
+                const response = await fetch(`https://xploro-backend.vercel.app/user/recommendation`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
