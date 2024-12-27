@@ -1,4 +1,5 @@
-# [Xploro](https://xploro-one.vercel.app/) 
+# Xploro 
+[https://xploro-one.vercel.app/](https://xploro-one.vercel.app/)
 
 Xploro is a location-based event discovery application that allows users to explore and host events in their vicinity. The platform leverages geolocation data to filter events, ensuring users find activities within a specific range of their current location. This README provides a comprehensive overview of the project's features, architecture, and setup instructions.
 
