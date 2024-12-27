@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { handleError } from '../utils';
+import { handleError } from '../Utils';
 import Lottie from 'react-lottie';
 import successAnimation from '../animations/sccess-animation.json';
 

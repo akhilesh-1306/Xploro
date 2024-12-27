@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleError, handleSuccess } from "../utils";
+import { handleError, handleSuccess } from "../Utils";
 import { ToastContainer } from "react-toastify";
 
 const HostForm = () => {

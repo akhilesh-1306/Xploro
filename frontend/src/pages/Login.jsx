@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Link, Navigate, useNavigate} from "react-router-dom"
 import {ToastContainer} from "react-toastify"
-import { handleError,handleSuccess } from '../utils';
+import { handleError,handleSuccess } from '../Utils';
 
 export default function Login() {
 
