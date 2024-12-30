@@ -71,7 +71,7 @@ const triggerRecommendation = async (req, res) => {
         const { allEventIds, allEventTags } = extractEventIdsAndTags(allEvents);
         // console.log(allEventTags);
         // Make a request to the recommendation system running on a different server
-        const recommendationResponse = await axios.post('http://127.0.0.1:5000/recommend', 
+        const recommendationResponse = await axios.post('https://xploro-recommendation.vercel.app', 
             {
                 interactions: allEventIds,  // Interaction-related data
                 tags: allEventTags,         // Tags-related data
